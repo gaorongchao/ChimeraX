@@ -17,7 +17,7 @@ __all__ = ['taskman', 'taskman_desc']
 
 def taskman(session: Session, action: str, job: str = None) -> None:
     if action == 'list':
-        if len(session.tasks.list()) == 0:
+        if len(session.tasks) == 0:
             session.logger.info("No tasks running")
         else:
             session.logger.info("\n".join([str(task) for task in session.tasks.list()]))

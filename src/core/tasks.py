@@ -366,7 +366,7 @@ class JobMonitorError(JobError):
     pass
 
 
-class Tasks(StateManager):
+class Tasks(StateManager, dict):
     """A per-session state manager for tasks.
 
     :py:class:`Tasks` instances are per-session singletons that track
@@ -375,7 +375,7 @@ class Tasks(StateManager):
     """
     _id_counter = itertools.count(1)
 
-    def __init__(self, session, first=False):
+    def __init__(self, session):
         """Initialize per-session state manager for tasks.
 
         Parameters
@@ -384,8 +384,8 @@ class Tasks(StateManager):
             Session for which this state manager was created.
 
         """
-        self._session = weakref.ref(session)
-        self._tasks = {}
+        self.session = weakref.ref(session)
+        super(dict).__init__()
 
     def take_snapshot(self, session, flags):
         """Save state of running tasks.
@@ -405,7 +405,7 @@ class Tasks(StateManager):
 
         """
         tasks = {}
-        for tid, task in self._tasks.items():
+        for tid, task in self.items():
             assert(isinstance(task, Task))
             if task.state == RUNNING and task.SESSION_SAVE:
                 tasks[tid] = task
@@ -432,8 +432,7 @@ class Tasks(StateManager):
         """
         t = session.tasks
         for tid, task in data['tasks'].items():
-            t._tasks[tid] = task
-        # TODO: t._id_counter?
+            t[tid] = task
         return t
 
     def reset_state(self, session):
@@ -444,62 +443,28 @@ class Tasks(StateManager):
         tasks, all registered tasks are terminated.
 
         """
-        tids = list(self._tasks.keys())
+        tids = list(self.keys())
         for tid in tids:
             try:
-                task = self._tasks[tid]
+                task = self[tid]
             except KeyError:
                 continue
             if task.SESSION_ENDURING or not task.SESSION_SAVE:
                 continue
             task.terminate()
             try:
-                del self._tasks[tid]
+                del self[tid]
             except KeyError:
-                # In case terminating the task removed it from task list
+                # In case terminating the task removed itself from task list
                 pass
 
-    def __len__(self) -> int:
-        "Return the number of registered tasks."
-        return len(self._tasks)
-
-    def __contains__(self, item) -> bool:
-        return item in self._tasks
-
-    def __iter__(self):
-        return iter(self._tasks)
-
-    def __getitem__(self, key):
-        return self._tasks[key]
-
-    def keys(self):
-        return self._tasks.keys()
-
-    def items(self):
-        return self._tasks.items()
-
-    def values(self):
-        return self._tasks.values()
-
-    def list(self):
-        """Return list of tasks.
-
-        Returns
-        -------
-        list
-            List of :py:class:`Task` instances.
-
-        """
-        return list(self._tasks.values())
-
-    # session.tasks.add(self) should == session.tasks[None] = self
     def __setitem__(self, key, task):
         if key is None:
-            self.add(task)
+            dict.__setitem__(self, next(self._id_counter), task)
+        elif key in self:
+            raise ValueError("Attempted to record task ID already in task list")
         else:
-            # TODO: A robust solution that will not collide with the
-            # internal counter.
-            self._tasks[key] = task
+            dict.__setitem__(self, key, task)
 
     def __delitem__(self, task):
         self.remove(task)
@@ -542,6 +507,7 @@ class Tasks(StateManager):
             pass
         session.triggers.activate_trigger(REMOVE_TASK, task)
 
+    # session.tasks[tid].state = new_state
     def update_state(self, task, new_state):
         """Update the state for the given task.
 
@@ -558,20 +524,9 @@ class Tasks(StateManager):
         session = self._session()   # resolve back reference
         if task.terminated():
             task._cleanup()
-            session.triggers.activate_trigger(END_TASK, task)
+            self.session.triggers.activate_trigger(END_TASK, task)
         else:
-            session.triggers.activate_trigger(UPDATE_TASK, task)
-
-    def find_by_id(self, tid):
-        """Return a :py:class:`Task` instance with the matching identifier.
-
-        Parameters
-        ----------
-        tid : int
-            Unique per-session identifier for a registered task.
-
-        """
-        return self._tasks.get(tid, None)
+            self.session.triggers.activate_trigger(UPDATE_TASK, task)
 
     def find_by_class(self, cls):
         """Return a list of tasks of the given class.
@@ -585,4 +540,4 @@ class Tasks(StateManager):
             Class object used to match task instances.
 
         """
-        return [task for task in self._tasks.values() if isinstance(task, cls)]
+        return [task for task in self.values() if isinstance(task, cls)]
