@@ -384,8 +384,14 @@ class Tasks(StateManager, dict):
             Session for which this state manager was created.
 
         """
-        self.session = weakref.ref(session)
+        self._session = weakref.ref(session)
         super(dict).__init__()
+
+    @property
+    def session(self):
+        """Read-only property for session that contains this task."""
+        return self._session()
+
 
     def take_snapshot(self, session, flags):
         """Save state of running tasks.
@@ -478,11 +484,11 @@ class Tasks(StateManager, dict):
             A newly created task.
 
         """
-        session = self._session()   # resolve back reference
         if task.id is None:
             task.id = next(self._id_counter)
         self._tasks[task.id] = task
-        session.triggers.activate_trigger(ADD_TASK, task)
+        if self.session:
+            self.session.triggers.activate_trigger(ADD_TASK, task)
 
     def remove(self, task):
         """Deregister task with state manager.
@@ -493,19 +499,19 @@ class Tasks(StateManager, dict):
             List of registered tasks.
 
         """
-        session = self._session()   # resolve back reference
         tid = task.id
         if tid is None:
             # Not registered in a session
             return
         task.id = None
         try:
-            del self._tasks[tid]
+            del self[tid]
         except KeyError:
             # Maybe we had reset and there were still old
             # tasks finishing up
             pass
-        session.triggers.activate_trigger(REMOVE_TASK, task)
+        if self.session:
+            self.session.triggers.activate_trigger(REMOVE_TASK, task)
 
     # session.tasks[tid].state = new_state
     def update_state(self, task, new_state):
@@ -521,12 +527,13 @@ class Tasks(StateManager, dict):
 
         """
         task.state = new_state
-        session = self._session()   # resolve back reference
         if task.terminated():
             task._cleanup()
-            self.session.triggers.activate_trigger(END_TASK, task)
+            if self.session:
+                self.session.triggers.activate_trigger(END_TASK, task)
         else:
-            self.session.triggers.activate_trigger(UPDATE_TASK, task)
+            if self.session:
+                self.session.triggers.activate_trigger(UPDATE_TASK, task)
 
     def find_by_class(self, cls):
         """Return a list of tasks of the given class.
