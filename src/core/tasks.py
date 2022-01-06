@@ -486,7 +486,7 @@ class Tasks(StateManager, dict):
         """
         if task.id is None:
             task.id = next(self._id_counter)
-        self._tasks[task.id] = task
+        self[task.id] = task
         if self.session:
             self.session.triggers.activate_trigger(ADD_TASK, task)
 
