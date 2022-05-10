@@ -101,8 +101,8 @@ ifdef DEBUG
 else
 	OPT = -O3 -Wall -Wextra
 endif
-	CC = clang -pipe
-	CXX = clang++ -std=c++11 -stdlib=libc++ -pipe
+	CC = clang -pipe -arch x86_64 -arch arm64
+	CXX = clang++ -std=c++11 -stdlib=libc++ -pipe -arch x86_64 -arch arm64
 	SDK_PATH = $(shell echo | gcc -xc -E -v - 2>&1 | grep '\.sdk/usr/include$$' | cut -d . -f 1,2,3,4).sdk
 ifndef PREREQ_MAKE
 	CC += -fvisibility=hidden
