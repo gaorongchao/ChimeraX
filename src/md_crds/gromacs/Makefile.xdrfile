@@ -10,7 +10,7 @@
 # === UCSF ChimeraX Copyright ===
 
 PREREQ_MAKE = 1
-TOP = ../../../..
+TOP = ../../..
 include $(TOP)/mk/config.make
 
 include Makefile.common
