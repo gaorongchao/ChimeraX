@@ -27,7 +27,7 @@ static wchar_t* extra[] = {
 	L"faulthandler",
 #endif
 	L"-m",
-	L"chimerax",
+	L"chimerax.core",
 };
 static const int ec = sizeof(extra) / sizeof (extra[0]);
 
