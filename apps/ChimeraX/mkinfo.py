@@ -111,7 +111,7 @@ if 'session' in locals() or 'session' in globals():
     chimera_types = [f.name for f in formats if f.name.startswith('Chimera')]
 else:
     sys.path.insert(0, '')
-    from ChimeraX_main import init
+    from .ChimeraX_main import init
     init([app_name, "--safemode", "--nogui", "--exit"])
     formats = []
 

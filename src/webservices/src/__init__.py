@@ -13,6 +13,21 @@ from chimerax.core.toolshed import BundleAPI
 from .cxservices_job import CxServicesJob
 
 class _MyAPI(BundleAPI):
-	pass
+	
+    api_version = 1
+
+    @staticmethod
+    def register_command(bi, ci, logger):
+        command_name = ci.name
+        logger.info(command_name)
+        from . import cmd
+        function_name = command_name.replace(' ', '_')
+        logger.info(function_name)
+        func = getattr(cmd, function_name)
+        desc = getattr(cmd, function_name + "_desc")
+        if desc.synopsis is None:
+            desc.synopsis = ci.synopsis
+        from chimerax.core.commands import register
+        register(command_name, desc, func, logger=logger)
 
 bundle_api = _MyAPI()
