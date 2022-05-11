@@ -101,8 +101,9 @@ class InstalledBundleCache(list):
             directory = app_dirs.user_data_dir
         else:
             from chimerax import app_data_dir as directory
+        print(directory)
         timestamp_file = os.path.join(directory, _TIMESTAMP)
-        with open(timestamp_file, 'w') as f:
+        with open(timestamp_file, 'w+') as f:
             # Contents of file are never read, see _is_cache_newer()
             import time
             print(time.ctime(), file=f)
