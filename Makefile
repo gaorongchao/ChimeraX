@@ -62,14 +62,14 @@ testimports:
 	$(APP_EXE) --exit --nogui --silent cxtestimports.py
 
 sync:
-	mkdir -p $(build_prefix)/sync/{python-only,binary}
-	$(MAKE) -C src/bundles sync
+	mkdir -p $(build_prefix)/sync/
+	$(MAKE) -C src sync
 
 sync-venv:
 ifndef VIRTUAL_ENV
 	@echo "No virtual env to install to! Doing nothing."
 else
-	pip install --force-reinstall $(build_prefix)/sync/binary/* $(build_prefix)/sync/python-only/*
+	pip install --force-reinstall $(build_prefix)/sync/*
 endif
 
 ifdef WIN32
@@ -89,7 +89,7 @@ vdocs.install:
 
 build-dirs:
 	-mkdir -p $(build_prefix) $(bindir) $(libdir) $(includedir) $(datadir) \
-		$(build_prefix)/sync/{python-only,binary}
+		$(build_prefix)/sync/
 ifndef WIN32
 	-cd $(build_prefix) && ln -nfs lib lib64
 endif
