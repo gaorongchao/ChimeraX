@@ -101,12 +101,12 @@ ifdef DEBUG
 else
 	OPT = -O3 -Wall -Wextra
 endif
-	CC = clang -pipe
-	CXX = clang++ -std=c++11 -stdlib=libc++ -pipe
+	CFLAGS = -pipe -arch arm64 -arch x86_64
+	CXXFLAGS = -std=c++11 -stdlib=libc++ -pipe -arch arm64 -arch x86_64
 	SDK_PATH = $(shell echo | gcc -xc -E -v - 2>&1 | grep '\.sdk/usr/include$$' | cut -d . -f 1,2,3,4).sdk
 ifndef PREREQ_MAKE
-	CC += -fvisibility=hidden
-	CXX += -fvisibility-ms-compat
+	CFLAGS += -fvisibility=hidden
+	CFLAGS += -fvisibility-ms-compat
 endif
 
 	PYDEF = -DPyMODINIT_FUNC='extern "C" __attribute__((__visibility__("default"))) PyObject*'
