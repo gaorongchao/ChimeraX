@@ -170,8 +170,8 @@ endif
 	rc $(DEFS) /i . /Fo$@ $<
 endif
 
-CFLAGS = $(OPT) $(INCS) $(DEFS)
-CXXFLAGS = $(OPT) $(INCS) $(DEFS)
+CFLAGS += $(OPT) $(INCS) $(DEFS)
+CXXFLAGS += $(OPT) $(INCS) $(DEFS)
 LDFLAGS = $(OPT)
 LOADER = $(CXX)
 
