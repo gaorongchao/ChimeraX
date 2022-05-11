@@ -36,7 +36,9 @@ else
 endif
 	$(MAKE) -C prereqs app-install
 	$(MAKE) build-app-dirs
+	$(MAKE) -C apps/ChimeraX install
 	$(MAKE) -C src install
+	$(MAKE) -C apps install
 	$(MAKE) -C docs install
 ifndef WIN32
 	# Admin privileges are needed on Windows 10
@@ -46,7 +48,7 @@ endif
 	$(APP_PYTHON_EXE) -m pip check
 ifeq ($(OS),Darwin)
 	# update Info.plist with data formats provided by bundles
-	$(MAKE) -C src/apps/ChimeraX reinstall-plist
+	$(MAKE) -C apps/ChimeraX install-plist
 endif
 	@echo 'Finished install at' `date`
 

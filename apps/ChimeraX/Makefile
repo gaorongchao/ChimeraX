@@ -70,21 +70,21 @@ ifdef DEBUG
 	fi
 endif
 
-install-others: $(PY_MAIN) $(ICONS)
-	$(RSYNC) $(PY_MAIN) $(PYSITEDIR)
+install-others: $(ICONS)
 	$(RSYNC) $(ICONS) $(datadir)
 	if [ -d "$(app_prefix)" ]; then \
-		$(RSYNC) $(PY_MAIN) $(APP_PYSITEDIR); \
-		$(RSYNC) $(ICONS) $(app_datadir); \
+		$(RSYNC) $(ICONS) $(app_datadir);
 	fi
 else
-install: $(PROG) $(PY_MAIN) $(ICONS) $(APP_NAME).1
+ifeq ($(OS),Darwin)
+install: $(PROG) $(ICONS) $(APP_NAME).1 chimerax-icon.icns
+else
+install: $(PROG) $(ICONS) $(APP_NAME).1
+endif
 	$(RSYNC) $(PROG) $(bindir)
-	$(RSYNC) $(PY_MAIN) $(PYSITEDIR)
 	$(RSYNC) $(ICONS) $(datadir)
 	if [ -d "$(app_prefix)" ]; then \
 		$(RSYNC) $(PROG) $(app_bindir); \
-		$(RSYNC) $(PY_MAIN) $(APP_PYSITEDIR); \
 		$(RSYNC) $(ICONS) $(app_datadir); \
 	fi
 	mkdir -p $(datadir)/man/man1
@@ -97,14 +97,10 @@ ifeq ($(OS),Darwin)
 	# Must use hard link for code signing to work
 	-if [ -d "$(app_prefix)" ]; then \
 		ln -nf $(app_bindir)/$(PROG) $(app_prefix)/MacOS/$(APP_NAME); \
-		$(RSYNC) Info.plist $(app_prefix)/Info.plist; \
 		$(RSYNC) chimerax-icon.icns $(app_prefix)/Resources/chimerax-icon.icns; \
 	fi
 
-reinstall-plist:
-	rm Info.plist
-# use Chimera executable in this pass so that we pick up registered formats (and 'session' is available)
-#	$(MAKE) Info.plist
+install-plist:
 	$(wildcard $(TOP)/ChimeraX*.app)/Contents/bin/ChimeraX --nogui --script "mkinfo.py $(APP_NAME)" --exit || (rm Info.plist ; exit 1)
 	$(RSYNC) Info.plist $(app_prefix)/Info.plist
 endif
@@ -123,6 +119,7 @@ endif
 pylint:
 	$(PYLINT) *.py
 
+# TODO: Move to top-level Makefile
 run:
 	$(PYTHON_EXE) $(PY_MAIN)
 
@@ -149,7 +146,6 @@ ChimeraX-icon512.png: ChimeraX-icon.svg
 
 
 ifeq ($(OS),Darwin)
-install: Info.plist
 Info.plist: chimerax-icon.icns
 endif
 

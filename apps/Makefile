@@ -12,7 +12,7 @@
 TOP = ..
 include $(TOP)/mk/config.make
 
-SUBDIRS = $(APP_NAME) structcomp
+SUBDIRS = structcomp
 ifneq (,$(wildcard /usr/bin/valgrind))
 SUBDIRS += valgrind
 endif
