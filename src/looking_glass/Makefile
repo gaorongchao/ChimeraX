@@ -1,6 +1,6 @@
 include ../Makefile.bundle
 
-TOP	= ../../..
+TOP	= ../..
 include $(TOP)/mk/config.make
 
 HOLOPLAYCORE_LIBRARY = holoplaycore-0.1.0.tar.gz

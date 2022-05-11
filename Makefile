@@ -14,7 +14,7 @@ TOP := $(shell (cd "$(TOP)"; pwd))
 NO_SUBDIR_ALL=1
 NO_SUBDIR_INSTALL=1
 NO_SUBDIR_TEST=1
-SUBDIRS = prereqs src
+SUBDIRS = prereqs src apps
 -include .makerc
 include $(TOP)/mk/config.make
 include $(TOP)/mk/subdir.make

@@ -1,7 +1,7 @@
 # need to install C++ headers for subsequent builds
 BUILD_AND_INSTALL = 1
 include ../Makefile.bundle
-TOP = ../../..
+TOP = ../..
 include $(TOP)/mk/config.make
 
 CSRCS = connect_cpp/imex.h connect_cpp/connect.cpp connect_cpp/connect.h

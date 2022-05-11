@@ -16,7 +16,7 @@
 # the application and it invoke the chimerax.MOD_NAME module.
 # (APP_NAME is set in config.make.)
 
-TOP = ../../..
+TOP = ../..
 include $(TOP)/mk/config.make
 
 #MOD_NAME = 

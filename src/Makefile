@@ -8,10 +8,6 @@
 # including partial copies, of the software or any revisions
 # or derivations thereof.
 # === UCSF ChimeraX Copyright ===
-
-# Note: any software used should be mentioned in docs/embedded.html
-# with the appropriate license.
-
 TOP = ..
 NO_SUBDIR_ALL = 1
 -include $(TOP)/.makerc

@@ -1,4 +1,4 @@
-TOP	= ../../..
+TOP	= ../..
 include $(TOP)/mk/config.make
 
 CHIMERAX_APP = $(realpath $(wildcard ../../../ChimeraX*.app))
