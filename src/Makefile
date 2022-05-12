@@ -9,7 +9,7 @@
 # or derivations thereof.
 # === UCSF ChimeraX Copyright ===
 TOP = ..
-NO_SUBDIR_ALL = 1
+NO_SUBDIR_INSTALL = 1
 SUBDIR_SYNC = 1
 SUBDIR_BUILD = 1
 -include $(TOP)/.makerc
@@ -63,9 +63,7 @@ ifeq ($(OS),Linux)
 REST_SUBDIRS += linux_support
 endif
 
-SUBDIRS = $(CORE_SUBDIR) $(BUNDLE_BUILDER_SUBDIR) $(TOOLSHED_UTILS_SUBDIR) $(REST_SUBDIRS)
-
-NO_SUBDIR_INSTALL = 1
+SUBDIRS = $(BUNDLE_BUILDER_SUBDIR) $(TOOLSHED_UTILS_SUBDIR) $(REST_SUBDIRS)
 
 # All needed subdirectories must be set by now.
 include $(TOP)/mk/subdir.make
@@ -78,7 +76,7 @@ dir:	Makefile.dependencies
 $(SUBDIR_BUILD): dir
 
 install:
-	$(MAKE) -C core install
+	$(MAKE) -C $(CORE_SUBDIR) install 
 	$(MAKE) build
 	cd $(SYNC_DIR) && $(APP_BOOTSTRAP_PIP) install --upgrade --upgrade-strategy only-if-needed */*.whl
 	$(APP_EXE) --exit --nogui --silent --cmd "toolshed reload installed"
