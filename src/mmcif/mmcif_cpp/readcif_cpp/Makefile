@@ -14,7 +14,7 @@ ifdef WIN32
 INCS = -I'$(shell cygpath -m '$(includedir)')'
 else
 # TODO: remove this when everywhere
-CXX += -fvisibility-ms-compat
+CXXFLAGS += -fvisibility-ms-compat
 endif
 
 all: $(LIBRARY)
