@@ -73,7 +73,7 @@ endif
 install-others: $(ICONS)
 	$(RSYNC) $(ICONS) $(datadir)
 	if [ -d "$(app_prefix)" ]; then \
-		$(RSYNC) $(ICONS) $(app_datadir);
+		$(RSYNC) $(ICONS) $(app_datadir); \
 	fi
 else
 ifeq ($(OS),Darwin)
