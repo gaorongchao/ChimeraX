@@ -6,7 +6,7 @@ my_name = None
 skip = set()
 
 DOCS = os.path.join("..", "docs")
-BUNDLES = os.path.join("..", "src", "bundles")
+BUNDLES = os.path.join("..", "src")
 
 
 def build():
@@ -14,9 +14,10 @@ def build():
     for dirname in os.listdir(BUNDLES):
         # dirname may not be a directory, but we do not care
         # since test will return False anyway
-        docs_dir = os.path.join(BUNDLES, dirname, "src", "docs")
-        if os.path.exists(docs_dir):
-            _symlink_user(docs_dir, False)
+        if dirname != 'core':
+            docs_dir = os.path.join(BUNDLES, dirname, "src", "docs")
+            if os.path.exists(docs_dir):
+                _symlink_user(docs_dir, False)
     generate_user_index(DOCS)
 
 
