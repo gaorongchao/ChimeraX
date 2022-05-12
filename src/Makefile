@@ -78,7 +78,7 @@ $(SUBDIR_BUILD): dir
 install:
 	$(MAKE) -C $(CORE_SUBDIR) install 
 	$(MAKE) build
-	cd $(SYNC_DIR) && $(APP_BOOTSTRAP_PIP) install --upgrade --upgrade-strategy only-if-needed */*.whl
+	cd $(SYNC_DIR) && $(APP_BOOTSTRAP_PIP) install --upgrade --upgrade-strategy only-if-needed *.whl
 	$(APP_EXE) --exit --nogui --silent --cmd "toolshed reload installed"
 
 lint:
