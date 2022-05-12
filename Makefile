@@ -36,8 +36,15 @@ else
 endif
 	$(MAKE) -C prereqs app-install
 	$(MAKE) build-app-dirs
+ifdef WIN32
+	$(MAKE) -C src install-core
+endif
 	$(MAKE) -C apps/ChimeraX install
+ifdef WIN32
+	$(MAKE) -C src build-and-install-bundles
+else
 	$(MAKE) -C src install
+endif
 	$(MAKE) -C apps install
 	$(MAKE) -C docs install
 ifndef WIN32

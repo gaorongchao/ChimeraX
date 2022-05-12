@@ -75,11 +75,15 @@ dir:	Makefile.dependencies
 
 $(SUBDIR_BUILD): dir
 
-install:
+install-core:
 	$(MAKE) -C $(CORE_SUBDIR) install 
+
+build-and-install-bundles:
 	$(MAKE) build
 	cd $(SYNC_DIR) && $(APP_BOOTSTRAP_PIP) install --upgrade --upgrade-strategy only-if-needed *.whl
 	$(APP_EXE) --exit --nogui --silent --cmd "toolshed reload installed"
+
+install: install-core build-and-install-bundles
 
 lint:
 ifneq (,$(PYSRCS))
