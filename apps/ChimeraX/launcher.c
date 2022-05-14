@@ -7,6 +7,8 @@
 #endif
 #include <locale.h>
 
+#define set_chimerax_dist_ver(ver) PyModule_AddStringConstant(cx_module, "__chimerax_c_dist_version__", ver)
+
 /*
  * Mimic:
  *
@@ -77,7 +79,29 @@ app_main(int argc, wchar_t** wargv)
 		new_argv[ac++] = wargv[i];
 	assert(ac == new_argc);
 	new_argv[ac] = NULL;
-
+	// On launch, inject version information into the ChimeraX binary.
+	Py_Initialize();
+	PyObject* cx_module = PyImport_ImportModule("chimerax");
+#ifdef techpreview
+	set_chimerax_dist_ver("1.5-techpreview");
+#else
+#ifdef candidate
+	set_chimerax_dist_ver("1.5-rc");
+#else
+#ifdef daily
+	set_chimerax_dist_ver("1.5-daily");
+#else
+#ifdef production
+	set_chimerax_dist_ver("1.5");
+#else
+	set_chimerax_dist_ver("1.5-developer");
+#endif
+#endif
+#endif
+#endif
+	PyModule_AddStringConstant(cx_module, "__chimerax_c_dist_build_date__", __DATE__);
 	int result = Py_Main(new_argc, new_argv);
+	free(new_argv);
+	Py_Finalize();
 	return result;
 }
