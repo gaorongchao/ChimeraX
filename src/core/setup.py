@@ -15,6 +15,8 @@
 # distutils.debug.DEBUG = True
 
 from setuptools import setup, Extension
+from Cython.Build import cythonize 
+
 import glob
 import os
 import sys
@@ -29,9 +31,11 @@ else:
     # data files are relative to rootdir
     rel_inst_shlib_dir = os.path.basename(shlib_dir)
 
+cythonize(Extension("chimerax.core._serialize", sources=["src/_serialize.pyx"]))
+
 setup(
-    ext_modules=[
-        Extension("chimerax.core._serialize", sources=["src/_serialize.cpp"])
-        , Extension("chimerax.core._mac_util", sources=glob.glob("src/mac_util_cpp/*[!.h]"))
+    ext_modules = [
+        Extension("chimerax.core._mac_util", sources=glob.glob("src/mac_util_cpp/*[!.h]"))
+        , Extension("chimerax.core._serialize", sources=["src/_serialize.cpp"])
     ]
 )

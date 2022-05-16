@@ -1,6 +1,6 @@
 # supplemental information for setup.py
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools", "cython", "wheel"]
 build-backend = "setuptools.build_meta"
 
 #license_file = ../../copyright.txt
@@ -60,7 +60,7 @@ packages=[
 
 [tool.setuptools.package-data]
 # *.pdb files are Windows debugging files
-"chimerax.core" = ["*.json", "*.so", "*.pdb"] 
+"chimerax.core" = ["*.json", "*.so", "*.pdb", "_serialize.pyx"]
 
 [tool.chimerax]
 bundle-name="ChimeraX-Core"
