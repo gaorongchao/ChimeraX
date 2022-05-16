@@ -727,14 +727,27 @@ def image_info_to_html(msg, image_info):
 
 def log_version(logger):
     '''Show version information.'''
+    version = None
+    date = None
+    try:
+        from chimerax import __chimerax_c_dist_build_date__
+        from chimerax import __chimerax_c_dist_version__
+        version = __chimerax_c_dist_version__
+        date = __chimerax_c_dist_build_date__
+    except:
+        pass
     from chimerax.core import buildinfo
     from chimerax import app_dirs as ad
     from . import toolshed
     t = toolshed.get_toolshed()
     if t:
         b = t.find_bundle('ChimeraX-Core', logger, True)
-        version = b.version
+        if version is None:
+            version = b.version
     else:
-        version = ad.version
-    logger.info("%s %s version: %s (%s)" % (ad.appauthor, ad.appname, version, buildinfo.date.split()[0]))
+        if version is None:
+            version = ad.version
+    if date is None:
+        date = buildinfo.date.split()[0]
+    logger.info("%s %s version: %s (%s)" % (ad.appauthor, ad.appname, version, date))
     logger.info(buildinfo.copyright)

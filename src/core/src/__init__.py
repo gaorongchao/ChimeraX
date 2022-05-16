@@ -16,6 +16,8 @@ chimerax.core: collection of base ChimeraX functionality
 ========================================================
 
 """
+import importlib.metadata
+__version__ = importlib.metadata.version(__package__)
 from .buildinfo import version
 from .toolshed import BundleAPI
 BUNDLE_NAME = 'ChimeraX-Core'

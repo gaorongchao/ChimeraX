@@ -8,7 +8,7 @@
 import sys
 import os
 
-__version__ = "0.2.0a0"     # version of this file -- PEP 440 compatible
+__chimerax_main_version__ = "0.2.0a0"     # version of this file -- PEP 440 compatible
 
 app_name = "ChimeraX"
 app_author = "UCSF"
@@ -758,6 +758,8 @@ def init(argv, event_loop=True):
         sess.update_loop.start_redraw_timer()
         sess.logger.info('<a href="cxcmd:help help:credits.html">How to cite UCSF ChimeraX</a>',
                          is_html=True)
+        sess.logger.info('test')
+        sess.logger.info(__chimerax_dist_version__)
 
     # Show any messages from installing bundles on restart
     if restart_action_msgs:
