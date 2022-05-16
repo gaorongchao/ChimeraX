@@ -1,0 +1,84 @@
+# vim: set expandtab ts=4 sw=4:
+
+# === UCSF ChimeraX Copyright ===
+# Copyright 2020 Regents of the University of California.
+# All rights reserved.  This software provided pursuant to a
+# license agreement containing restrictions on its disclosure,
+# duplication and use.  For details see:
+# http://www.rbvi.ucsf.edu/chimerax/docs/licensing.html
+# This notice must be embedded in or attached to all copies,
+# including partial copies, of the software or any revisions
+# or derivations thereof.
+# === UCSF ChimeraX Copyright ===
+[build-system]
+requires = ["setuptools", "cython", "wheel-filename~=1.2"]
+build-backend = "setuptools.build_meta"
+
+#license_file = ../../copyright.txt
+
+[project]
+name = "chimerax.toolshed_utils"
+description="Toolshed bundle utilities"
+version="1.2.1" 
+authors= [{name = "UCSF RBVI", email="chimerax@cgl.ucsf.edu"}]
+dependencies = [
+    # "beautifulsoup4 == 4.5.3",	# in prereqs/pips
+    # "colorama == 0.3.7",		# in prereqs/pips
+    # "filelock == 2",  # TODO: breaks on Windows
+    # "grako == 3.16.5",            # in prereqs/pips
+    # "numpy == 1.11",  # TODO: breaks on Windows
+    # "Pillow == 4.2.1",		# in prereqs/pips
+    # "pycollada == 0.4",  # TODO: pypi version doesn't work with Python 3
+    # We use PyOpenGL 3.1.1 for Windows but 3.1.0 (our build) for
+    # Linux and Mac.  Maybe we start using >=?
+    # "PyOpenGL == 3.1.0",
+    # "PySide2 == 5.15.1",		# in prereqs/pips
+    # "scipy == 0.18",  # TODO: breaks on Windows
+    # "setuptools == 34.4.1",	# in prereqs/setuptools
+    # "sortedcontainers == 1.5.7",	# in prereqs/pips
+    # "suds_jurko == 0.6",          # in prereqs/pips
+    # "msgpack >= 0.5",
+]
+classifiers = [
+        "Development Status :: 5 - Stable",
+        "Environment :: MacOS X :: Aqua",
+        "Environment :: Win32 (MS Windows)",
+        "Environment :: X11 Applications",
+        "Framework :: ChimeraX",
+        "Intended Audience :: Science/Research",
+        "License :: Free for non-commercial use",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: Microsoft :: Windows :: Windows 10",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 3",
+        "Topic :: Scientific/Engineering :: Visualization",
+        "Topic :: Scientific/Engineering :: Chemistry",
+        "Topic :: Scientific/Engineering :: Bio-Informatics",
+        "ChimeraX :: Bundle :: Utilities :: 1,1 :: chimerax.toolshed_utils ::  :: true",
+        "ChimeraX :: Tool :: Updates :: Utilities :: synopsis",
+]
+requires-python = ">=3.7"
+
+[project.urls]
+Home="https://www.rbvi.ucsf.edu/chimerax/"
+
+[tool.setuptools]
+packages=[
+    "chimerax.toolshed_utils"
+]
+[tool.setuptools.package-dir]
+"chimerax.toolshed_utils" = "src" 
+
+[tool.setuptools.package-data]
+"chimerax.toolshed_utils" = ["docs/user/tools/*"]
+
+[tool.chimerax]
+bundle-name="ChimeraX-ToolshedUtils"
+chimerax-classifiers = [
+    # The maximum session version number (second number below) is the
+    # current core state version. Since there are several different
+    # core classes that are saved in sessions, it represents a
+    # aggregate version and should be increased whenever one of the
+    # various core *STATE_VERSION numbers changes.
+    "ChimeraX :: Bundle :: Core :: 1,2 :: chimerax.core :: :: ",
+]
