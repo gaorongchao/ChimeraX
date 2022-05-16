@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name="chimerax.bundle_builder"
+description="Bundle building utilities"  # one line synopsis
+version="1.1.0"
+authors= [{name = "UCSF RBVI", email="chimerax@cgl.ucsf.edu"}]
+dependencies = [
+    # "beautifulsoup4 == 4.5.3",	# in prereqs/pips
+    # "colorama == 0.3.7",		# in prereqs/pips
+    # "filelock == 2",  # TODO: breaks on Windows
+    # "grako == 3.16.5",            # in prereqs/pips
+    # "numpy == 1.11",  # TODO: breaks on Windows
+    # "Pillow == 4.2.1",		# in prereqs/pips
+    # "pycollada == 0.4",  # TODO: pypi version doesn't work with Python 3
+    # We use PyOpenGL 3.1.1 for Windows but 3.1.0 (our build) for
+    # Linux and Mac.  Maybe we start using >=?
+    # "PyOpenGL == 3.1.0",
+    # "PySide2 == 5.15.1",		# in prereqs/pips
+    # "scipy == 0.18",  # TODO: breaks on Windows
+    # "setuptools == 34.4.1",	# in prereqs/setuptools
+    # "sortedcontainers == 1.5.7",	# in prereqs/pips
+    # "suds_jurko == 0.6",          # in prereqs/pips
+    # "msgpack >= 0.5",
+]
+classifiers=[
+    # From https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    # and our own ChimeraX classifiers.
+    "Development Status :: 5 - Stable",
+    "Environment :: MacOS X :: Aqua",
+    "Environment :: Win32 (MS Windows)",
+    "Environment :: X11 Applications",
+    "Framework :: ChimeraX",
+    "Intended Audience :: Science/Research",
+    "License :: Free for non-commercial use",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+requires-python = ">=3.7"
+dynamic = ["entry-points"]
+ 
+[project.urls]
+Home="https://www.rbvi.ucsf.edu/chimerax/"
+
+[tool.setuptools]
+packages=[
+    "chimerax.bundle_builder"
+]
+[tool.setuptools.package-dir]
+"chimerax.bundle_builder" = "src" 
+
+[tool.setuptools.dynamic]
+entry-points = {file = ["entry_points.txt"]}
+
+[tool.chimerax]
+bundle-name="ChimeraX-BundleBuilder"
