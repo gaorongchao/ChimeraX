@@ -192,8 +192,7 @@ ifdef WIN32
 YEAR = $(shell date +%Y)
 VER = $(shell $(PYTHON_EXE) geticoninfo.py -v)
 PRODVER = $(shell $(PYTHON_EXE) geticoninfo.py -p)
-RELEASE =  $(shell $(PYTHON_EXE) geticoninfo.py -r)
-ifeq ($(RELEASE),prerelease)
+ifneq (production,$(BUILD_TYPE))
 FLAGS = VS_FF_PRERELEASE
 else
 FLAGS = 0
