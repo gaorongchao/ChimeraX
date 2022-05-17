@@ -7,7 +7,14 @@
 #endif
 #include <locale.h>
 
-#define set_chimerax_dist_ver(ver) PyModule_AddStringConstant(cx_module, "__chimerax_c_dist_version__", ver)
+// https://stackoverflow.com/a/12648993
+#ifdef CX_DIST_VER
+#define STR_VER_(x) #x
+#define STR_VER(x) STR_VER_(x)
+#define set_chimerax_dist_ver(ver) PyModule_AddStringConstant(cx_module, "_CHIMERAX_C_DIST_VERSION", STR_VER(CX_DIST_VER) "-" ver)
+#else
+#define set_chimerax_dist_ver(ver) PyModule_AddStringConstant(cx_module, "_CHIMERAX_C_DIST_VERSION", ver)
+#endif
 
 /*
  * Mimic:
@@ -83,23 +90,23 @@ app_main(int argc, wchar_t** wargv)
 	Py_Initialize();
 	PyObject* cx_module = PyImport_ImportModule("chimerax");
 #ifdef techpreview
-	set_chimerax_dist_ver("1.5-techpreview");
+	set_chimerax_dist_ver("techpreview");
 #else
 #ifdef candidate
-	set_chimerax_dist_ver("1.5-rc");
+	set_chimerax_dist_ver("rc");
 #else
 #ifdef daily
-	set_chimerax_dist_ver("1.5-daily");
+	set_chimerax_dist_ver("daily");
 #else
 #ifdef production
-	set_chimerax_dist_ver("1.5");
+	set_chimerax_dist_ver("");
 #else
-	set_chimerax_dist_ver("1.5-developer");
+	set_chimerax_dist_ver("developer");
 #endif
 #endif
 #endif
 #endif
-	PyModule_AddStringConstant(cx_module, "__chimerax_c_dist_build_date__", __DATE__);
+	PyModule_AddStringConstant(cx_module, "_CHIMERAX_C_DIST_BUILD_DATE", __DATE__);
 	int result = Py_Main(new_argc, new_argv);
 	free(new_argv);
 	Py_Finalize();

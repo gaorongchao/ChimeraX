@@ -368,8 +368,9 @@ def parse_arguments(argv):
     return opts, args
 
 
-def init(argv, event_loop=True):
+def init(event_loop=True):
     import sys
+    argv = sys.argv
     # MacOS 10.12+ generates drop event for command-line argument before main()
     # is even called; compensate
     bad_drop_events = False
@@ -758,8 +759,6 @@ def init(argv, event_loop=True):
         sess.update_loop.start_redraw_timer()
         sess.logger.info('<a href="cxcmd:help help:credits.html">How to cite UCSF ChimeraX</a>',
                          is_html=True)
-        sess.logger.info('test')
-        sess.logger.info(__chimerax_dist_version__)
 
     # Show any messages from installing bundles on restart
     if restart_action_msgs:

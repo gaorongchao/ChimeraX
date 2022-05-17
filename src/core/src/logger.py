@@ -730,10 +730,10 @@ def log_version(logger):
     version = None
     date = None
     try:
-        from chimerax import __chimerax_c_dist_build_date__
-        from chimerax import __chimerax_c_dist_version__
-        version = __chimerax_c_dist_version__
-        date = __chimerax_c_dist_build_date__
+        from chimerax import _CHIMERAX_C_DIST_BUILD_DATE
+        from chimerax import _CHIMERAX_C_DIST_VERSION
+        version = _CHIMERAX_C_DIST_VERSION
+        date = _CHIMERAX_C_DIST_BUILD_DATE
     except:
         pass
     from chimerax.core import buildinfo
@@ -741,7 +741,7 @@ def log_version(logger):
     from . import toolshed
     t = toolshed.get_toolshed()
     if t:
-        b = t.find_bundle('ChimeraX-Core', logger, True)
+        b = t.find_bundle('chimerax.core', logger, True)
         if version is None:
             version = b.version
     else:
