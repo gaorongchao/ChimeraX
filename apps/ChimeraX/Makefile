@@ -190,8 +190,14 @@ ChimeraX-icon16.png:
 ifdef WIN32
 
 YEAR = $(shell date +%Y)
-VER = $(shell $(PYTHON_EXE) geticoninfo.py -v)
-PRODVER = $(shell $(PYTHON_EXE) geticoninfo.py -p)
+VER = $(CX_DIST_VER)
+PRODVER_MAJOR = $(word 1,$(subst ., ,$(CX_DIST_VER)))
+PRODVER_MINOR = $(word 2,$(subst ., ,$(CX_DIST_VER)))
+PRODVER_PATCH = $(word 3,$(subst ., ,$(CX_DIST_VER)))
+ifeq ($(PRODVER_PATCH),)
+PRODVER_PATCH = 0
+endif
+PRODVER = $(PRODVER_MAJOR),$(PRODVER_MINOR),$(PRODVER_PATCH),0
 ifneq (production,$(BUILD_TYPE))
 FLAGS = VS_FF_PRERELEASE
 else
