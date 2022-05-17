@@ -58,9 +58,12 @@ packages=[
 [tool.setuptools.package-dir]
 "chimerax.core" = "src" 
 
+[tool.setuptools.exclude-package-data]
+"*" = ["src/mac_util_cpp"]
+
 [tool.setuptools.package-data]
 # *.pdb files are Windows debugging files
-"chimerax.core" = ["*.json", "*.so", "*.pdb", "_serialize.pyx"]
+"chimerax.core" = ["*.json", "*.so", "*.pdb", "_serialize.pyx", "pyproject.toml"]
 
 [tool.chimerax]
 bundle-name="ChimeraX-Core"
