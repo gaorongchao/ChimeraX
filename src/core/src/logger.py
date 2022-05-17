@@ -734,7 +734,7 @@ def log_version(logger):
         from chimerax import _CHIMERAX_C_DIST_VERSION
         version = _CHIMERAX_C_DIST_VERSION
         date = _CHIMERAX_C_DIST_BUILD_DATE
-    except:
+    except ImportError: # Running as a library, display core bundle version
         pass
     from chimerax.core import buildinfo
     from chimerax import app_dirs as ad
