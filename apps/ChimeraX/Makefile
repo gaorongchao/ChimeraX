@@ -189,7 +189,7 @@ ChimeraX-icon16.png:
 
 ifdef WIN32
 
-YEAR = $(shell $(PYTHON_EXE) geticoninfo.py -y)
+YEAR = $(shell date +%Y)
 VER = $(shell $(PYTHON_EXE) geticoninfo.py -v)
 PRODVER = $(shell $(PYTHON_EXE) geticoninfo.py -p)
 RELEASE =  $(shell $(PYTHON_EXE) geticoninfo.py -r)
