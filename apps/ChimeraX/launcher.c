@@ -8,13 +8,12 @@
 #include <locale.h>
 
 // https://stackoverflow.com/a/12648993
-#ifdef CX_DIST_VER
 #define STR_VER_(x) #x
 #define STR_VER(x) STR_VER_(x)
-#define set_chimerax_dist_ver(ver) PyModule_AddStringConstant(cx_module, "_CHIMERAX_C_DIST_VERSION", STR_VER(CX_DIST_VER) "-" ver)
-#else
-#define set_chimerax_dist_ver(ver) PyModule_AddStringConstant(cx_module, "_CHIMERAX_C_DIST_VERSION", ver)
+#ifndef CX_DIST_VER
+#define CX_DIST_VER local
 #endif
+#define set_chimerax_dist_ver(ver) PyModule_AddStringConstant(cx_module, "_CHIMERAX_C_DIST_VERSION", STR_VER(CX_DIST_VER) "-" ver)
 
 /*
  * Mimic:
